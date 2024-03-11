@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 const permissions = require("../roles");
 
 const deviceSchema = mongoose.Schema(
-    {
+    { 
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        },
         name: {
             type: String,
             maxLength: [20, "Name must be 20 characters or below"],
@@ -13,9 +17,9 @@ const deviceSchema = mongoose.Schema(
             required: [true, "Please add a device type"],
         },
         permission: {
-            type: String,
-            enum: Object.keys(permissions),
-            default: "none",
+            type: Number,
+            enum: Object.values(permissions),
+            default: permissions.NONE,
         },
     },
 );

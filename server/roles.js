@@ -1,7 +1,7 @@
 const roles = {
-    all: { precedence: 3 },
-    some: { precedence: 2 },
-    none: {  precedence: 1 }
+    ALL: 3,
+    SOME: 2,
+    NONE: 1
 };
 
 module.exports = roles;

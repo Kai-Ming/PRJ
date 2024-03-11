@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const permissions = require("../roles");
+const permissions = require("../permissions");
 
 const deviceDataSchema = mongoose.Schema(
     {
@@ -16,9 +16,9 @@ const deviceDataSchema = mongoose.Schema(
             required: true,
         },
         permission: {
-            type: String,
-            enum: Object.keys(permissions),
-            requireed: true,
+            type: Number,
+            enum: Object.values(permissions),
+            required: true,
         },  
     },
     {

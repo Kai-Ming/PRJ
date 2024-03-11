@@ -29,6 +29,11 @@ const createDevice = asyncHandler(async (req, res) => {
     }
 });
 
+const getDevices = asyncHandler(async (req, res) => {
+    const devices = await Device.find({ userId: req.user.id });
+    res.status(200).json(devices);
+});
+
 const changeDevicePermisssions = asyncHandler(async (req, res) => {
     const { permission } = req.body;
     if (!permission) {
@@ -61,6 +66,6 @@ const changeDevicePermisssions = asyncHandler(async (req, res) => {
     }
 });
 
-modeles.exports = { createDevice, 
+module.exports = { createDevice, 
                     changeDevicePermisssions 
                 };

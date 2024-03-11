@@ -29,9 +29,9 @@ const userSchema = mongoose.Schema(
 			default: false,
 		},
 		roles: {
-			type: String,
-			enum: Object.keys(roles),
-			default: "none",
+			type: Number,
+			enum: Object.values(roles),
+			default: roles.NONE,
 		},
 	},
 	{
