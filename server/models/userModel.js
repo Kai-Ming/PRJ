@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const roles = require("../roles");
+const userCategory = require("../userCategories");
+const thirdPartyCategory = require("../thirdPartyCategories");
 
 const userSchema = mongoose.Schema(
 	{
@@ -24,15 +25,22 @@ const userSchema = mongoose.Schema(
 			type: String,
 			required: [true, "Please add a password"],
 		},
-		thirdParty: {
-			type: Boolean,
-			default: false,
+		type: {
+			type: String,
+			enum: ['main', 'third'],
+			default: 'main',
+			required: true,
 		},
-		roles: {
-			type: Number,
-			enum: Object.values(roles),
-			default: roles.NONE,
+		userCategory: {
+			type: String,
+			enum: Object.values(userCategory),
+			default: userCategory.PRIVATE,			
 		},
+		thirdPartyCategory: {
+			type: String,
+			enum: Object.values(thirdPartyCategory),
+			default: thirdPartyCategory.OTHERS,
+		}
 	},
 	{
 		timestamps: true,

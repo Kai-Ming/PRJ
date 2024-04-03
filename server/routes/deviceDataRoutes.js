@@ -5,6 +5,6 @@ const { createDeviceData, getDeviceData } = require("../controllers/deviceDataCo
 
 router.post("/", createDeviceData);
 
-router.get("/:id", getDeviceData);
+router.get("/deviceData", getDeviceData);
 
 module.exports = router;

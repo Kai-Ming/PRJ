@@ -2,13 +2,14 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
-const roles = require("../roles");
+const thirdPartyCategory = require("../thirdPartyCategories");
+const userCategory = require("../userCategories");
 
 // @desc    Register new user
 // @route   POST /api/user
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password, thirdParty } = req.body;
+    const { name, email, password, type, userCategory, thirdPartyCategory } = req.body;
     if (!name || !email || !password) {
         res.status(400);
         throw new Error("Please enter all fields");
@@ -32,14 +33,18 @@ const registerUser = asyncHandler(async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            thirdParty: thirdParty
+            type,
+            userCategory, 
+            thirdPartyCategory,
         });
 
         res.status(201).json({
             _id: user.id,
             name: user.name,
             email: user.email,
-            thirdParty: user.thirdParty,
+            type: user.type,
+            userCategory: userCategory, 
+            thirdPartyCategory: thirdPartyCategory,
             token: generateToken(user.id),
         });
     } catch (error) {
@@ -105,18 +110,18 @@ const editUser = asyncHandler(async (req, res) => {
 // @route   GET /api/user/profile
 // @access  Private
 const getUser = asyncHandler(async (req, res) => {
-    const { _id, name, email } = await User.findById(
+    const { _id, name, email, userCategory, thirdPartyCategory } = await User.findById(
         req.user.id
     );
 
     res.status(200).json({
         id: _id,
         name,
-        email
+        email, 
+        userCategory, 
+        thirdPartyCategory
     });
-});
-
-const createSubUser = asyncHandler()
+}); 
 
 // Generate JWT
 const generateToken = (id) => {
@@ -125,41 +130,22 @@ const generateToken = (id) => {
     });
 };
 
-const changeUserRole = asyncHandler(async (req, res) => {
-    const { roles, thirdPartyId } = req.body;
-    if (!roles) {
-        res.status(400);
-        throw new Error("Please enter role");
-    }
-    if (!roles[roles]) {
-        res.status(400);
-        throw new Error("Invalid role");
-    }
-    try {
-        if (req.user.type != 'third') {
-            const thirdParty = await User.findById(thirdPartyId);
-            if (thirdParty) {
-                thirdParty.roles = roles;
-                await thirdParty.save();
-                res.json({
-                    _id: thirdParty.id,
-                    name: thirdParty.name,
-                    email: thirdParty.email,
-                    roles: thirdParty.roles,
-                });
-            } else {
-                res.status(404);
-                throw new Error("Third party not found");
-            }
+const changeUserCategory = asyncHandler(async (req, res) => {    
+    const { userCategory } = req.body;
+
+    if (req.user.type == 'main') {
+        const user = await User.findOneAndUpdate(
+            { _id: req.user.id},
+            { userCategory: userCategory },
+        );
+        res.status(200).json({
+            _id: user._id,
+            userCategory: user.userCategory,
+        });
+        } else {
+            res.status(404);
+            throw new Error("User not found");
         }
-        else {
-            res.status(403);
-            throw new Error("Unauthorized to change role");
-        }
-    } catch (error) {
-        res.status(400);
-        throw error;
-    }
 });
 
 module.exports = {
@@ -167,5 +153,5 @@ module.exports = {
     loginUser,
     getUser,
     editUser,
-    changeUserRole,
+    changeUserCategory,
 };

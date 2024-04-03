@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const permissions = require("../permissions");
+const deviceCategory = require("../deviceCategories");
 
 const deviceDataSchema = mongoose.Schema(
     {
@@ -15,11 +15,15 @@ const deviceDataSchema = mongoose.Schema(
             type: String,
             required: true,
         },
-        permission: {
-            type: Number,
-            enum: Object.values(permissions),
+        deviceCategory: {
+            type: String,
+            enum: Object.values(deviceCategory),
             required: true,
-        },  
+        },
+        canBeAccessedBy: {
+            type: [String],
+            required: true,
+        }  
     },
     {
         timestamps: true,
