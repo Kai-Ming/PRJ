@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const deviceCategory = require("../deviceCategories");
+const deviceCategories = require("../deviceCategories");
 
 const deviceDataSchema = mongoose.Schema(
     {
@@ -17,7 +17,7 @@ const deviceDataSchema = mongoose.Schema(
         },
         deviceCategory: {
             type: String,
-            enum: Object.values(deviceCategory),
+            enum: Object.values(deviceCategories),
             required: true,
         },
         canBeAccessedBy: {

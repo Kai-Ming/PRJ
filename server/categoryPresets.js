@@ -1,3 +1,5 @@
+const express = require("express");
+
 const categoryPresets = {
     PRIVATE: {LIGHTS: [], THERMOSTAT:[], LOCKS:[]},
     PARTLY_PRIVATE: {LIGHTS: ['ENERGY_COMPANY'], THERMOSTAT:['ENERGY_COMPANY'], LOCKS:[]},

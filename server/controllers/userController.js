@@ -69,13 +69,15 @@ const loginUser = asyncHandler(async (req, res) => {
                 _id: user.id,
                 name: user.name,
                 email: user.email,
+                type: user.type,
+                userCategory: user.userCategory,
+                thirdPartyCategory: user.thirdPartyCategory,
                 token: generateToken(user._id),
                 })
                 .status(200);
             return;
         }
     }
-
     res.status(401);
     throw new Error("Invalid credentials");
 });
@@ -110,7 +112,7 @@ const editUser = asyncHandler(async (req, res) => {
 // @route   GET /api/user/profile
 // @access  Private
 const getUser = asyncHandler(async (req, res) => {
-    const { _id, name, email, userCategory, thirdPartyCategory } = await User.findById(
+    const { _id, name, email, type, userCategory, thirdPartyCategory } = await User.findById(
         req.user.id
     );
 
@@ -118,6 +120,7 @@ const getUser = asyncHandler(async (req, res) => {
         id: _id,
         name,
         email, 
+        type,
         userCategory, 
         thirdPartyCategory
     });
@@ -132,7 +135,6 @@ const generateToken = (id) => {
 
 const changeUserCategory = asyncHandler(async (req, res) => {    
     const { userCategory } = req.body;
-
     if (req.user.type == 'main') {
         const user = await User.findOneAndUpdate(
             { _id: req.user.id},
@@ -142,10 +144,10 @@ const changeUserCategory = asyncHandler(async (req, res) => {
             _id: user._id,
             userCategory: user.userCategory,
         });
-        } else {
-            res.status(404);
-            throw new Error("User not found");
-        }
+    } else {
+        res.status(401);
+        throw new Error("User not allowed to change category");
+    }
 });
 
 module.exports = {

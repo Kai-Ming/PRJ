@@ -1,7 +1,5 @@
 const DeviceData = require("../models/deviceDataModel");
 const asyncHandler = require("express-async-handler");
-const deviceCategory = require("../permissions");
-const roles = require("../roles");
 const categoryPreset = require("../categoryPresets");
 
 const createDeviceData = asyncHandler(async (req, res) => {
@@ -41,17 +39,9 @@ const getDeviceData = asyncHandler(async (req, res) => {
         }
         else {
             // 3rd party requesting data of a specific device
-            const userCategory = req.user.thirdPartyCategory;
+            const thirdPartyCategory = req.user.thirdPartyCategory;
 
-            const levelsPermitted = [];
-
-            for (let key in permissions) {
-                if (permissions[key] < userRole) {
-                    levelsPermitted.push(permissions[key]);
-                }
-            }
-
-            const deviceData = await DeviceData.find({ name, userId: req.user.id, permissions: {$in: levelsPermitted} });
+            const deviceData = await DeviceData.find({ canBeAccessedBy: thirdPartyCategory });
 
             if (!deviceData) {
                 res.status(400);

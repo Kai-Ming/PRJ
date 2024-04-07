@@ -1,6 +1,6 @@
 const Device = require("../models/deviceModel");
 const asyncHandler = require("express-async-handler");
-const deviceCategory = require("../deviceCategories");
+//const deviceCategory = require("../deviceCategories");
 
 const createDevice = asyncHandler(async (req, res) => {
     const { name, deviceCategory } = req.body;

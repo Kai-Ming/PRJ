@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const deviceCategory = require("../deviceCatgories");
+const deviceCategory = require("../deviceCategories");
 
 const deviceSchema = mongoose.Schema(
     { 

@@ -3,7 +3,9 @@ const router = express.Router();
 
 const { createDevice, getDevices } = require("../controllers/deviceController");
 
-router.post("/", createDevice);
-router.patch("/devices", getDevices);
+const { protect } = require("../middleware/authenticationMiddleware");
+
+router.post("/", protect, createDevice);
+router.patch("/devices", protect, getDevices);
 
 module.exports = router;

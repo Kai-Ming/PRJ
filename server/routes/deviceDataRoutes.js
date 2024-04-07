@@ -3,8 +3,9 @@ const router = express.Router();
 
 const { createDeviceData, getDeviceData } = require("../controllers/deviceDataController");
 
-router.post("/", createDeviceData);
+const { protect } = require("../middleware/authenticationMiddleware");
 
-router.get("/deviceData", getDeviceData);
+router.post("/", protect, createDeviceData);
+router.get("/deviceData", protect, getDeviceData);
 
 module.exports = router;
