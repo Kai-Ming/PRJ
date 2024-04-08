@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --exit",
+    "test-single": "cross-env NODE_ENV=test mocha --exit --grep",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },

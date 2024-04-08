@@ -1,9 +1,7 @@
-const express = require("express");
-
 const deviceCategories = {
     LIGHTS: 'LIGHTS',
     THERMOSTAT: 'THERMOSTAT',
-    LOCKS: 'LOCK'
+    LOCKS: 'LOCKS'
 }
 
-module.export = deviceCategories;
+module.exports = deviceCategories;

@@ -22,7 +22,7 @@ const createDevice = asyncHandler(async (req, res) => {
                 userId: device.userId,
                 name: device.name,
                 deviceCategory: device.deviceCategory,
-        });
+            });
         } catch (error) {
             res.status(400);
             throw error;
@@ -30,7 +30,7 @@ const createDevice = asyncHandler(async (req, res) => {
     }
     else {
         res.status(400);
-        throw new Error("Can't create device")
+        throw new Error("Can't create device");
     }
 });
 
@@ -40,7 +40,7 @@ const getDevices = asyncHandler(async (req, res) => {
         res.status(200).json(devices);
     }
     else {
-        res.status(400);
+        res.status(404);
         throw new Error("Can't get devices")
     }
 });

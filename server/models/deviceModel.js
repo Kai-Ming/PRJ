@@ -9,13 +9,12 @@ const deviceSchema = mongoose.Schema(
         },
         name: {
             type: String,
-            maxLength: [20, "Name must be 20 characters or below"],
             required: [true, "Please add a device name"],
         },
         deviceCategory: {
             type: String,
             enum: Object.values(deviceCategory),
-            required: true
+            required: true,
         },
     },
 );

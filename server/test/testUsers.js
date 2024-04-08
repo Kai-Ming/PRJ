@@ -193,6 +193,42 @@ describe("User tests", () => {
           should.not.exist(user, "The user should have been invalid");
         });
     });
+
+    it("should not accept invalid user category", async () => {
+      await User.create({
+        name: "John",
+        password: "123",
+        email: "john@example.com",
+        type: "main",
+        userCategory: "invalid",
+        thirdPartyCategory: thirdPartyCategories.OTHERS,
+      })
+        .catch((error) => {
+          should.exist(error);
+          error.should.have.property("name").eql("ValidationError");
+        })
+        .then((user) => {
+          should.not.exist(user, "The user should have been invalid");
+        });
+    });
+    
+    it("should not accept invalid third party category", async () => {
+      await User.create({
+        name: "John",
+        password: "123",
+        email: "john@example.com",
+        type: "main",
+        userCategory: userCategories.PRIVATE,
+        thirdPartyCategory: "invalid",
+      })
+        .catch((error) => {
+          should.exist(error);
+          error.should.have.property("name").eql("ValidationError");
+        })
+        .then((user) => {
+          should.not.exist(user, "The user should have been invalid");
+        });
+    });
   });
 
   describe("API tests", () => {
@@ -456,4 +492,4 @@ describe("User tests", () => {
       res2.should.have.status(401);
     });
   });
-});
+}); 
